@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
-<title>HTML Tutorial</title>
+<title>Tic Tac Toe</title>
 <body>
 
 <h1>Tic Tac Toe</h1>
-<p>This is a paragraph.</p>
+
 <table id="gameboard">
 <!-- Tic Tac Toe cells will be added in the JS-->
 </table>
@@ -28,8 +28,6 @@ initGame();
 
 
 function initGame(){
-
-
   for(var i = 0; i < NUM_ROWS; i++ ){
     var row = ticTacTable.insertRow(i);
     rows.push(row);
@@ -78,7 +76,6 @@ function initGame(){
               cells[i][j].innerHTML = "";
             }
           }
-          
         }
 
       } );
@@ -106,14 +103,33 @@ function switchTurn(){
 function gameStatus(){
   var winner = null;
 
-  // check rows for 3 in a row
-  var xcount;
-  var ocount;
+  //check rows
+  winner = checkRows();
+  if(winner != null){ return winner; }
 
+
+  winner = checkColumns();
+  if(winner != null){ return winner; }
+
+  
+  winner = checkDiagonals();
+  if(winner != null){ return winner; }
+
+  if(checkTie()){
+    return "Tie";
+  }
+
+  // return null if no conclusion to game yet
+  return null;
+}
+
+// return winner if there is one, else return null
+function checkRows(){
+  
   // loop through rows
   for(var i = 0; i < NUM_ROWS; i++){
-    ocount = 0;
-    xcount = 0;
+    var ocount = 0;
+    var xcount = 0;
     
     // count x's and o's in rows
     for(var j = 0; j < NUM_ROWS; j++){
@@ -132,11 +148,15 @@ function gameStatus(){
     else if(ocount == NUM_ROWS){ return "O";}
 
   }
+  return null;
+}
 
+// return winner if there is one, else return null
+function checkColumns(){
   // loop through cols
   for(var i = 0; i < NUM_ROWS; i++){
-    ocount = 0;
-    xcount = 0;
+    var ocount = 0;
+    var xcount = 0;
 
     // count x's and o's in cols
     for(var j = 0; j < NUM_ROWS; j++){
@@ -155,9 +175,14 @@ function gameStatus(){
 
   }
 
+  return null;
+}
+
+// return winner if there is one, else return null
+function checkDiagonals(){
   // check diagonals
-  ocount = 0;
-  xcount = 0;
+  var ocount = 0;
+  var xcount = 0;
   for(var i = 0; i < NUM_ROWS; i++){
     var currentCell = cells[i][i];
     var mark = currentCell.innerHTML;
@@ -190,36 +215,20 @@ function gameStatus(){
   if(xcount == NUM_ROWS){ return "X"; }
   else if(ocount == NUM_ROWS){ return "O";}
 
-  // check if full gameboard
-  var isFull = true;
-  for(var i = 0; i < NUM_ROWS; i++){
-    for (var j = 0; j < NUM_ROWS; j++){
-      if(cells[i][j].innerHTML == ""){
-        isFull = false;
-        break;
-      }
-    }
-  }
-  if(isFull){ return "Tie"; }
-
-  // return null if no conclusion to game yet
   return null;
 }
 
-function checkRows(){
-
-}
-
-function checkColumns(){
-
-}
-
-function checkDiagonals(){
-
-}
-
+// return true if tie, return false if game is still going
 function checkTie(){
-  
+  // check if full gameboard
+  for(var i = 0; i < NUM_ROWS; i++){
+    for (var j = 0; j < NUM_ROWS; j++){
+      if(cells[i][j].innerHTML == ""){
+        return false; // empty cell, game not tied
+      }
+    }
+  }
+  return true;
 }
 
 
