@@ -7,14 +7,11 @@ var PLAYER_X = 1;
 // initialize game
 var rows = [];
 var cells = [];
-var turn = 0;
+var turn = 1;
 var NUM_ROWS = 3; // default
 
 // create table
 var ticTacTable = document.getElementById("gameboard");
-
-// status div
-var status = document.getElementById("status");
 
 initGame(NUM_ROWS);
 
@@ -58,6 +55,7 @@ function initGame(gameSize){
         // check game status
         if(gameStatus() == null){
           switchTurn();
+          setStatusMessage();
         }
         else{
           // if someone has won the game, alert and start new game
@@ -78,6 +76,9 @@ function initGame(gameSize){
     // put rowcells in cells (array of arrays)
     cells.push(rowCells);
   }
+
+  //initialize status
+  setStatusMessage();
 }
 
 
@@ -240,4 +241,22 @@ function clearTable(){
   while(ticTacTable.rows.length > 0){
     ticTacTable.deleteRow(-1);
   }
+}
+
+function setStatusMessage(){
+  // status div
+  var status = document.getElementById("status");
+  var player;
+  switch(turn){
+    case PLAYER_O:
+      player = "O";
+      break;
+    case PLAYER_X:
+      player = "X";
+      break;
+    default:
+      player = null;
+  }
+  var statusString = "It is " + player + "'s turn.";
+  status.innerHTML = statusString;
 }
