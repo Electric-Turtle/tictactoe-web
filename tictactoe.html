@@ -8,10 +8,23 @@
 <table id="gameboard">
 <!-- Tic Tac Toe cells will be added in the JS-->
 </table>
+
+<br>
+Select Game Size:
+<select id="gamesize">
+  <option value="3">3</option>
+  <option value="4">4</option>
+  <option value="5">5</option>
+  <option value="6">6</option>
+</select>
+
+<br>
+
+
 <script>
 
 // constants
-var NUM_ROWS = 3;
+
 var PLAYER_O = 0;
 var PLAYER_X = 1;
 
@@ -20,15 +33,23 @@ var PLAYER_X = 1;
 var rows = [];
 var cells = [];
 var turn = 0;
+var NUM_ROWS = 3; // default 
 
 // create table
 var ticTacTable = document.getElementById("gameboard");
 
-initGame();
+initGame(NUM_ROWS);
 
+var sizeSelector = document.getElementById("gamesize");
+sizeSelector.addEventListener("change", function(){
+  var size = sizeSelector.options[sizeSelector.selectedIndex].text;
+  clearTable();
+  initGame(size);
+});
 
-function initGame(){
-  for(var i = 0; i < NUM_ROWS; i++ ){
+function initGame(gameSize){
+    NUM_ROWS = gameSize;
+    for(var i = 0; i < NUM_ROWS; i++ ){
     var row = ticTacTable.insertRow(i);
     rows.push(row);
 
@@ -37,17 +58,8 @@ function initGame(){
     for(var j = 0; j < NUM_ROWS; j++){
       var cell = rows[i].insertCell(j);
 
-      // alternate cell colors
-      var cellColor;
-      if(cells.length % 2 == 0){
-        cellColor = "#66ccff";
-      }
-      else{
-        cellColor = "#ff9999";
-      }
-
       // set cell style
-      var styleString = "width:100px; height: 100px; background-color:" + cellColor;
+      var styleString = "width:100px; height: 100px; background-color: #ff9999";
       cell.setAttribute("style", styleString);
       console.log(cell)
 
@@ -70,12 +82,7 @@ function initGame(){
             alert(gameStatus() + " has won!");
           }
           
-          // clear game
-          for(var i = 0; i < NUM_ROWS; i++){
-            for(var j = 0; j < NUM_ROWS; j++){
-              cells[i][j].innerHTML = "";
-            }
-          }
+          clearGame();
         }
 
       } );
@@ -231,7 +238,23 @@ function checkTie(){
   return true;
 }
 
+// clear O's and X's to restart game 
+function clearGame(){
+  for(var i = 0; i < cells.length; i++){
+    for(var j = 0; j < cells.length; j++){
+      cells[i][j].innerHTML = "";
+    }
+  }
+}
 
+// clear table contents before initGame is called to change game size
+function clearTable(){
+  rows = [];
+  cells = [];
+  while(ticTacTable.rows.length > 0){
+    ticTacTable.deleteRow(-1);
+  }
+}
 
 
 </script>
