@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
-<title>Tic Tac Toe</title>
+<head>
+  <title>Tic Tac Toe</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
 <body>
 
 <h1>Tic Tac Toe</h1>
@@ -33,7 +36,7 @@ var PLAYER_X = 1;
 var rows = [];
 var cells = [];
 var turn = 0;
-var NUM_ROWS = 3; // default 
+var NUM_ROWS = 3; // default
 
 // create table
 var ticTacTable = document.getElementById("gameboard");
@@ -59,12 +62,20 @@ function initGame(gameSize){
       var cell = rows[i].insertCell(j);
 
       // set cell style
-      var styleString = "width:100px; height: 100px; background-color: #ff9999";
+
+      var styleString = "background-color: #ff9999";
       cell.setAttribute("style", styleString);
-      console.log(cell)
+      //console.log(cell)
+
+      // set cell class
+      cell.className = "cell";
 
       // add on click listener
       cell.addEventListener('click', function(){
+        if(this.innerHTML != ""){
+          alert("Try another spot!");
+          return;
+        }
         // determine which marking and set
         if(turn == PLAYER_O) { this.innerHTML = "O";}
         else { this.innerHTML = "X";}
@@ -81,7 +92,7 @@ function initGame(gameSize){
           else{
             alert(gameStatus() + " has won!");
           }
-          
+
           clearGame();
         }
 
@@ -118,7 +129,7 @@ function gameStatus(){
   winner = checkColumns();
   if(winner != null){ return winner; }
 
-  
+
   winner = checkDiagonals();
   if(winner != null){ return winner; }
 
@@ -132,12 +143,12 @@ function gameStatus(){
 
 // return winner if there is one, else return null
 function checkRows(){
-  
+
   // loop through rows
   for(var i = 0; i < NUM_ROWS; i++){
     var ocount = 0;
     var xcount = 0;
-    
+
     // count x's and o's in rows
     for(var j = 0; j < NUM_ROWS; j++){
       var currentCell = cells[i][j];
@@ -147,8 +158,8 @@ function checkRows(){
       else{ break; } // break if empty cell (row can't be ful)
 
       // break if combination of marks
-      if(xcount > 0 && ocount > 0){ break; } 
-       
+      if(xcount > 0 && ocount > 0){ break; }
+
     }
     // check if full row
     if(xcount == NUM_ROWS){ return "X"; }
@@ -238,7 +249,7 @@ function checkTie(){
   return true;
 }
 
-// clear O's and X's to restart game 
+// clear O's and X's to restart game
 function clearGame(){
   for(var i = 0; i < cells.length; i++){
     for(var j = 0; j < cells.length; j++){
