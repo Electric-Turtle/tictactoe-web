@@ -27,6 +27,8 @@ sizeSelector.addEventListener("change", function() {
   NUM_ROWS = size;
   clearTable();
   initGame(size);
+  turn = PLAYER_X;
+  setStatusMessage();
 });
 
 // switch to two players
